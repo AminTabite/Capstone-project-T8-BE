@@ -18,8 +18,14 @@ public class FavoriteMove {
     @GeneratedValue
     @Id
     UUID id;
-    String move_input;
-    String character_name;
+
+
+    @Column(name = "move_input")
+    String moveInput;
+
+
+    @Column(name = "character_name")
+    String characterName;
 
     @ManyToOne
     @JoinColumn(name = "utente_id")
