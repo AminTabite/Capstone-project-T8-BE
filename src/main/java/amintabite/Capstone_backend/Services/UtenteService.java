@@ -72,8 +72,7 @@ public class UtenteService {
 
                 found.setUsername(payload.username());
                 found.setEmail(payload.email());
-                found.setPassword(payload.password());
-                found.setFavoriteMoveList(new ArrayList<>());
+        found.setPassword(bcrypt.encode(payload.password()));
 
         return utenteRepository.save(found);
 

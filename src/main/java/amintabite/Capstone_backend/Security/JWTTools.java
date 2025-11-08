@@ -17,15 +17,16 @@ public class JWTTools {
     @Value("${jwt.secret}")
     private String secret;
 
-    // Serve per creare il token
     public String createToken(Utente utente) {
         return Jwts.builder()
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30)) // 30 giorni, messo momentaneo per capstone. questa durata e' esagerata in contesti reali
-                .subject(String.valueOf(utente.getId()))
+                .setSubject(utente.getId().toString()) // UUID come subject
+                .claim("role", utente.getRole().name()) // opzionale
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 30)) // 30 giorni
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
+
 
     //  Controlla validità token
     public void verifyToken(String token) {
@@ -49,4 +50,18 @@ public class JWTTools {
 
         return UUID.fromString(claims.getSubject());
     }
+
+
+
+
+    public String extractSubject(String token) {
+        return Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
+
 }

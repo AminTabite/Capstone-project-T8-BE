@@ -46,23 +46,17 @@ public class FavMoveService {
 
 
     public List<FavoriteMove> getFavorites(Utente utente) {
-        return utente.getFavoriteMoveList();
-    }
+
+            return favMoveRepository.findAllByUtente_Id(utente.getId());
+        }
 
 
 
-//    public void removeFavorite(UUID moveId){
-//
-//        FavoriteMove move= favMoveRepository.findById(moveId)
-//                .orElseThrow(()-> new NotFoundException("Mossa non trovata"));
-//
-//        favMoveRepository.delete(move);
-//
-//    }
-
-
-
-    public void removeFavorite(UUID moveId, Utente utente){
+    /**
+     * Rimuove una mossa specifica dell'utente.
+     * Lancia UnauthorizedException se l'utente non possiede la mossa.
+     */
+    public void removeFavorite(UUID moveId, Utente utente) {
         FavoriteMove move = favMoveRepository.findById(moveId)
                 .orElseThrow(() -> new NotFoundException("Mossa non trovata"));
 
@@ -74,5 +68,5 @@ public class FavMoveService {
     }
 
 
+    }
 
-}

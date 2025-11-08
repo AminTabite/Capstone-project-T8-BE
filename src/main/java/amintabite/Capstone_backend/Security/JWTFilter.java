@@ -2,6 +2,7 @@ package amintabite.Capstone_backend.Security;
 
 import amintabite.Capstone_backend.Entities.Utente;
 import amintabite.Capstone_backend.Exceptions.UnauthorizedException;
+import amintabite.Capstone_backend.Services.CustomUserDetailsService;
 import amintabite.Capstone_backend.Services.UtenteService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,7 +25,7 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTTools jwtTools;
 
     @Autowired
-    private UtenteService utenteService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -32,7 +33,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // Se non c'è header o non è Bearer, va avanti
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -41,13 +41,11 @@ public class JWTFilter extends OncePerRequestFilter {
         String accessToken = authHeader.substring(7);
 
         try {
-            jwtTools.verifyToken(accessToken);
+            UUID userId = UUID.fromString(jwtTools.extractSubject(accessToken));
+            Utente found = customUserDetailsService.loadUserById(userId);
 
-            UUID utenteId = jwtTools.extractIdFromToken(accessToken);
-            Utente found = utenteService.findById(utenteId);
-
-           Authentication authentication = new UsernamePasswordAuthenticationToken(
-                   found, null, java.util.Collections.emptyList()
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    found, null, found.getAuthorities()
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -56,10 +54,5 @@ public class JWTFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             throw new UnauthorizedException("Token non valido o scaduto. Effettua il login.");
         }
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        return new AntPathMatcher().match("/auth/**", request.getServletPath());
     }
 }
