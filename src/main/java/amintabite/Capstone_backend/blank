@@ -1,0 +1,15 @@
+{
+  "username": "NeoPlayer",
+  "email": "neo.player@example.com",
+  "password": "User1234",
+  "role": "USER"
+}
+
+
+{
+  "username": "ArcaneAdmin",
+  "email": "arcane.admin@example.com",
+  "password": "Admin1234",
+  "role": "ADMIN"
+}
+

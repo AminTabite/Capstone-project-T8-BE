@@ -8,6 +8,7 @@ import amintabite.Capstone_backend.Services.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +65,7 @@ public class UtenteController {
     //modifica utente
     @PutMapping("/{utenteId}")
 
-    public Utente updateNewUtente(@PathVariable @Validated UUID utenteid, @RequestBody UtentePayload payload, BindingResult validationResult){
+    public Utente updateNewUtente(@PathVariable @Validated UUID utenteId, @RequestBody UtentePayload payload, BindingResult validationResult){
 
         if(validationResult.hasErrors()){
 
@@ -72,7 +73,7 @@ public class UtenteController {
                     .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
 
         }  else {
-            return utenteService.findByIdAndUpdate(utenteid, payload);
+            return utenteService.findByIdAndUpdate(utenteId, payload);
         }
 
     }
@@ -88,7 +89,19 @@ public class UtenteController {
 
     }
 
+    //endpoint me per gli user
 
+    @GetMapping("/me")
+    public Utente getMyProfile(@AuthenticationPrincipal Utente currentUser) {
+        return currentUser;
+    }
+
+
+    @PutMapping("/me")
+    public Utente updateMyProfile(@AuthenticationPrincipal Utente currentUser,
+                                  @RequestBody UtentePayload payload) {
+        return utenteService.updateMyProfile(currentUser, payload);
+    }
 
 
 }

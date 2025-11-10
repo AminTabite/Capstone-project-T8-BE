@@ -38,15 +38,16 @@ public class Utente implements UserDetails {
 
 
 
-    public Utente(String username, String email, String password) {
+    public Utente(String username, String email, String password, Roles role) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
     @Override
     public boolean isAccountNonExpired() {

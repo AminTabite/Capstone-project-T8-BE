@@ -2,6 +2,7 @@ package amintabite.Capstone_backend.Services;
 
 import amintabite.Capstone_backend.Entities.FavoriteMove;
 import amintabite.Capstone_backend.Entities.Utente;
+import amintabite.Capstone_backend.Enums.Roles;
 import amintabite.Capstone_backend.Exceptions.NotFoundException;
 import amintabite.Capstone_backend.Payloads.UtentePayload;
 import amintabite.Capstone_backend.Repositories.UtenteRepository;
@@ -38,20 +39,22 @@ public class UtenteService {
 
     //salvataggio utente
 
-   public Utente saveNewUtente(UtentePayload payload){
-       Utente newUtente = new Utente(
+    public Utente saveNewUtente(UtentePayload payload) {
+        // Se il ruolo non è specificato, di default è USER
+        Roles assignRole = (payload.role() != null) ? payload.role() : Roles.USER;
 
-               payload.username(),
-               payload.email(),
-               bcrypt.encode(payload.password())
-       );
+        Utente newUtente = new Utente(
+                payload.username(),
+                payload.email(),
+                bcrypt.encode(payload.password()),
+                assignRole
+        );
 
-       Utente savedUtente = utenteRepository.save(newUtente);
-       log.info("Utente " + savedUtente.getUsername() + " salvato correttamente!");
-       return savedUtente;
+        Utente savedUtente = utenteRepository.save(newUtente);
+        log.info("Utente {} salvato correttamente con ruolo {}", savedUtente.getUsername(), savedUtente.getRole());
 
-
-   }
+        return savedUtente;
+    }
 
    //findById
 
@@ -79,12 +82,35 @@ public class UtenteService {
     }
 
 
+    //update/me
+
+    public Utente updateMyProfile(Utente currentUser, UtentePayload payload) {
+
+        currentUser.setUsername(payload.username());
+        currentUser.setEmail(payload.email());
+
+        if (payload.password() != null && !payload.password().isBlank()) {
+            currentUser.setPassword(bcrypt.encode(payload.password()));
+        }
+        Utente updated = utenteRepository.save(currentUser);
+        log.info("Profilo aggiornato per utente: " + updated.getUsername());
+        return updated;
+    }
+
+
+
+
+
     //delete
 
     public void findByIdAndDelete(UUID utenteId){
 
         Utente found = utenteRepository.findById(utenteId)
                 .orElseThrow(() -> new NotFoundException("utente con id " + utenteId + " non trovato"));
+
+
+        
+
 
         utenteRepository.delete(found);
         log.info("utente con ID " + utenteId + " eliminato correttamente.");
