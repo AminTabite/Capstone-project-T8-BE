@@ -47,11 +47,12 @@ public class JWTFilter extends OncePerRequestFilter {
             Utente found = customUserDetailsService.loadUserById(userId);
 
 
-            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(found.getRole().name()));
-
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    found, null, authorities
+                    found,                // PRINCIPAL
+                    null,                 // Credenziali non servono
+                    found.getAuthorities() // AUTHORITIES corrette
             );
+
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);

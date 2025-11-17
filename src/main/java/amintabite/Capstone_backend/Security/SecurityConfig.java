@@ -51,6 +51,7 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(req -> req
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/proxy/**").permitAll()
+                .requestMatchers("/favorites/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/utenti/me").hasAnyAuthority("USER","ADMIN")
                 .requestMatchers("/utenti/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()

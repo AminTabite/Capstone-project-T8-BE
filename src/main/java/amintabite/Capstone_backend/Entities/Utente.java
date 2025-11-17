@@ -32,7 +32,7 @@ public class Utente implements UserDetails {
     @Enumerated(EnumType.STRING)
     Roles role = Roles.USER;
     @JsonIgnore
-    @OneToMany(mappedBy = "utente")
+    @OneToMany(mappedBy = "utente", fetch = FetchType.EAGER)
     List<FavoriteMove> favoriteMoveList;
 
 

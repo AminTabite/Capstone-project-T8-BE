@@ -63,6 +63,7 @@ public class FavMoveController {
 
     @GetMapping
     public List<FavoriteMove> getFavorites(@AuthenticationPrincipal Utente utente) {
+        System.out.println("PRINCIPAL = " + utente);
         return favMoveService.getFavorites(utente);
     }
 

@@ -12,7 +12,7 @@ import java.util.UUID;
 @Entity
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "utente")
 @NoArgsConstructor
 public class FavoriteMove {
     @GeneratedValue
