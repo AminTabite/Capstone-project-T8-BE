@@ -7,4 +7,7 @@ public record FavMovePayload(
 
 
         @NotBlank String characterName
+
+
+
 ) {}

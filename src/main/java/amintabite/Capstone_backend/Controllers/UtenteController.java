@@ -103,5 +103,14 @@ public class UtenteController {
         return utenteService.updateMyProfile(currentUser, payload);
     }
 
+        @DeleteMapping("/me")
+        public void deleteMyProfile(@AuthenticationPrincipal Utente currentUser) {
+            utenteService.findByIdAndDelete(currentUser.getId());
+        }
 
-}
+
+    }
+
+
+
+
