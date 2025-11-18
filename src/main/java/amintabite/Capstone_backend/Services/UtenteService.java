@@ -5,6 +5,7 @@ import amintabite.Capstone_backend.Entities.Utente;
 import amintabite.Capstone_backend.Enums.Roles;
 import amintabite.Capstone_backend.Exceptions.NotFoundException;
 import amintabite.Capstone_backend.Payloads.UtentePayload;
+import amintabite.Capstone_backend.Repositories.FavMoveRepository;
 import amintabite.Capstone_backend.Repositories.UtenteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class UtenteService {
 
     @Autowired
     UtenteRepository utenteRepository;
+
+    @Autowired
+    FavMoveRepository favMoveRepository;
 
     @Autowired
     PasswordEncoder bcrypt;
@@ -109,8 +113,7 @@ public class UtenteService {
                 .orElseThrow(() -> new NotFoundException("utente con id " + utenteId + " non trovato"));
 
 
-        
-
+        favMoveRepository.deleteAll(found.getFavoriteMoveList());
 
         utenteRepository.delete(found);
         log.info("utente con ID " + utenteId + " eliminato correttamente.");
