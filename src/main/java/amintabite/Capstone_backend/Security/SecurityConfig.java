@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/proxy/**").permitAll()
                 .requestMatchers("/favorites/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/utenti/me").hasAnyAuthority("USER","ADMIN")
+                .requestMatchers( "/utenti/me").permitAll()
                 .requestMatchers("/utenti/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
         );

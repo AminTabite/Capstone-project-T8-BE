@@ -93,6 +93,7 @@ public class UtenteService {
 
         currentUser.setUsername(payload.username());
         currentUser.setEmail(payload.email());
+        currentUser.setRole(payload.role());
 
         if (payload.password() != null && !payload.password().isBlank()) {
             currentUser.setPassword(bcrypt.encode(payload.password()));

@@ -27,6 +27,9 @@ public class FavoriteMove {
     @Column(name = "character_name")
     String characterName;
 
+
+
+
     @ManyToOne
     @JoinColumn(name = "utente_id")
     private Utente utente;

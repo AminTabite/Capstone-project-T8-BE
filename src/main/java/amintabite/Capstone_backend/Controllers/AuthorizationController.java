@@ -25,11 +25,19 @@ public class AuthorizationController {
 
 
     @PostMapping("/login")
-    public TokenPayload login(@RequestBody LoginPayload body){
+    public TokenPayload login(@RequestBody @Validated LoginPayload body, BindingResult validationResult){
 
 
         if(body.email() == null || body.password() == null) {
             throw new UnauthorizedException("Email o password mancanti");
+        }
+
+        if(validationResult.hasErrors()){
+
+
+            throw new ValidationsException(validationResult.getFieldErrors()
+                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
+
         }
 
         return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body));
