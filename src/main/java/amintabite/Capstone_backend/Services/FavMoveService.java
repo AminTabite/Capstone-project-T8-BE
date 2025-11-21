@@ -25,8 +25,11 @@ public class FavMoveService {
 
     public FavoriteMove addFavorite(Utente utente, FavMovePayload payload){
 
-        boolean exists = favMoveRepository.existsByUtente_IdAndMoveInputAndCharacterName(
-                utente.getId(), payload.moveInput(), payload.characterName());
+        boolean exists = favMoveRepository.existsByUtente_IdAndMoveInputAndCharacterNameAndDamageAndStartupAndOnBlockAndOnHitAndHitLevelAndRecovery(
+                utente.getId(), payload.moveInput(), payload.characterName(), payload.damage(),
+                payload.hitLevel(), payload.onHit(), payload.onBlock(), payload.recovery(),payload.startup()
+
+        );
 
         if (exists) {
             throw new BadRequestException(
@@ -39,6 +42,12 @@ public class FavMoveService {
         FavoriteMove move = new FavoriteMove();
         move.setMoveInput(payload.moveInput());
         move.setCharacterName(payload.characterName());
+        move.setDamage(payload.damage());
+        move.setHitLevel(payload.hitLevel());
+        move.setOnHit(payload.onHit());
+        move.setOnBlock(payload.onBlock());
+        move.setStartup(payload.startup());
+        move.setRecovery(payload.recovery());
         move.setUtente(utente);
 
         return favMoveRepository.save(move);

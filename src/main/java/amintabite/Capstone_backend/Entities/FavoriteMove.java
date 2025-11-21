@@ -27,8 +27,35 @@ public class FavoriteMove {
     @Column(name = "character_name")
     String characterName;
 
+@Column(name = "damage")
+
+String damage;
 
 
+    @Column(name = "start_up")
+
+    String startup;
+
+
+    @Column(name = "on_block")
+
+    String onBlock;
+
+
+    @Column(name = "on_hit")
+
+    String onHit;
+
+
+    @Column(name = "hit_level")
+
+    String hitLevel;
+
+
+
+    @Column(name = "recovery")
+
+String recovery;
 
     @ManyToOne
     @JoinColumn(name = "utente_id")

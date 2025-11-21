@@ -10,10 +10,18 @@ import java.util.UUID;
 @Repository
 public interface FavMoveRepository extends JpaRepository<FavoriteMove, UUID> {
 
-    boolean existsByUtente_IdAndMoveInputAndCharacterName(UUID utenteId,
+    boolean existsByUtente_IdAndMoveInputAndCharacterNameAndDamageAndStartupAndOnBlockAndOnHitAndHitLevelAndRecovery(
+            UUID utenteId,
             String moveInput,
-            String characterName
+            String characterName,
+            String damage,
+            String startup,
+            String onBlock,
+            String onHit,
+            String hitLevel,
+            String recovery
     );
+
 
     List<FavoriteMove> findAllByUtente_Id(UUID id);
 }
