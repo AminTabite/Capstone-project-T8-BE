@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public record LoginPayload(
-        @NotBlank(message = "L'email non puo' essere vuota!")
-        @Email(message = "L'indirizzo email inserito non è nel formato corretto!")
+        @NotBlank(message = "Email can't be empty")
+        @Email(message = "Email adress must be correct")
 String email,
-@NotBlank(message = "La password non puo' essere vuota!")
-@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{4,}$", message = "La password deve contenere una maiuscola, una minuscola ecc ecc ...")
+@NotBlank(message = "Password can't be empty")
+@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{4,}$", message = "Password must have 1 capital letter, 1 number and 1 special character")
 String password
 
 ) {

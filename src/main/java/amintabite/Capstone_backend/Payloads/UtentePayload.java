@@ -4,16 +4,16 @@ import amintabite.Capstone_backend.Enums.Roles;
 import jakarta.validation.constraints.*;
 
 public record UtentePayload(
-        @NotBlank(message = "L'username non puo' essere vuoto")
-        @Size(min = 3, max = 20, message = "l'username deve avere almeno 3 caratteri, massimo 20")
+        @NotBlank(message = "Username can't be empty")
+        @Size(min = 3, max = 20, message = "Username must have 3 letters, max 20")
         String username,
-        @NotBlank(message = "L'email non puo' essere vuota!")
-        @Email(message = "L'indirizzo email inserito non è nel formato corretto!")
+        @NotBlank(message = "Email can't be empty!")
+        @Email(message = "Email Address must be correct")
         String email,
-        @NotBlank(message = "La password non puo' essere vuota!")
-        @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{4,}$", message = "La password deve contenere una maiuscola, una minuscola ecc ecc ...")
+        @NotBlank(message = "Password can't be empty")
+        @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{4,}$", message = "Password must have 1 capital letter, 1 number and 1 special character")
         String password,
-        @NotNull
+        @NotNull(message = "You must have a role")
         Roles role
 
 ) {

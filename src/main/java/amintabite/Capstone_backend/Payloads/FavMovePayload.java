@@ -17,18 +17,9 @@ public record FavMovePayload(
 
         @NotBlank   String onBlock,
 
-
-
-
         @NotBlank     String onHit,
 
-
-
-
         @NotBlank       String hitLevel,
-
-
-
 
         @NotBlank      String recovery
 

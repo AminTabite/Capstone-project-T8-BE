@@ -14,6 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:5173") //per accettare richieste da front-end
@@ -25,23 +28,18 @@ public class AuthorizationController {
 
 
     @PostMapping("/login")
-    public TokenPayload login(@RequestBody @Validated LoginPayload body, BindingResult validationResult){
-
-
-        if(body.email() == null || body.password() == null) {
+    public TokenPayload login(@RequestBody @Validated LoginPayload body, BindingResult validationResult) {
+        if (body.email() == null || body.password() == null) {
             throw new UnauthorizedException("Email o password mancanti");
         }
-
-        if(validationResult.hasErrors()){
-
-
-            throw new ValidationsException(validationResult.getFieldErrors()
-                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-
+        if (validationResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            validationResult.getFieldErrors().forEach(
+                    fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+            );
+            throw new ValidationsException(errors);
         }
-
         return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body));
-
     }
 
     @PostMapping("/register")
@@ -50,9 +48,17 @@ public class AuthorizationController {
 
         if(validationResult.hasErrors()){
 
+            Map<String,String > errors = new HashMap<>();
+            validationResult.getFieldErrors().forEach(
 
-            throw new ValidationsException(validationResult.getFieldErrors()
-                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
+                    fieldError ->  errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+
+            );
+
+            throw new ValidationsException(errors);
+
+
+
 
         }
             return this.utenteService.saveNewUtente(payload);

@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -51,12 +53,13 @@ public class UtenteController {
 
     public Utente createNewUtente(@RequestBody @Validated UtentePayload payload, BindingResult validationResult ) {
 
-        if(validationResult.hasErrors()){
-
-            throw new ValidationsException(validationResult.getFieldErrors()
-                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-
-        }  else {
+        if (validationResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            validationResult.getFieldErrors().forEach(
+                    fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+            );
+            throw new ValidationsException(errors);
+        } else {
             return utenteService.saveNewUtente(payload);
         }
     }
@@ -67,11 +70,12 @@ public class UtenteController {
 
     public Utente updateNewUtente(@PathVariable @Validated UUID utenteId, @RequestBody UtentePayload payload, BindingResult validationResult){
 
-        if(validationResult.hasErrors()){
-
-            throw new ValidationsException(validationResult.getFieldErrors()
-                    .stream().map(fieldError -> fieldError.getDefaultMessage()).toList());
-
+        if (validationResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            validationResult.getFieldErrors().forEach(
+                    fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+            );
+            throw new ValidationsException(errors);
         }  else {
             return utenteService.findByIdAndUpdate(utenteId, payload);
         }
@@ -98,9 +102,21 @@ public class UtenteController {
 
 
     @PutMapping("/me")
-    public Utente updateMyProfile(@AuthenticationPrincipal Utente currentUser,
-                                  @RequestBody UtentePayload payload) {
-        return utenteService.updateMyProfile(currentUser, payload);
+    public Utente updateMyProfile(@AuthenticationPrincipal @Validated Utente currentUser,
+                                  @RequestBody UtentePayload payload, BindingResult validationResult) {
+
+
+        if (validationResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            validationResult.getFieldErrors().forEach(
+                    fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage())
+            );
+            throw new ValidationsException(errors);
+        } else {
+
+
+            return utenteService.updateMyProfile(currentUser, payload);
+        }
     }
 
         @DeleteMapping("/me")

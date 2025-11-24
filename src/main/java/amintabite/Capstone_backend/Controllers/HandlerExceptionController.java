@@ -14,12 +14,15 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class HandlerExceptionController {
 
-@ExceptionHandler(ValidationsException.class)
+
+
+    @ExceptionHandler(ValidationsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsPayload handleValidationErrors(ValidationsException ex) {
+        return new ErrorsPayload(ex.getErrors(), LocalDateTime.now());
+    }
 
-    return new ErrorsPayload(ex.getErrors().toString(), LocalDateTime.now());
-}
+
 
 @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
