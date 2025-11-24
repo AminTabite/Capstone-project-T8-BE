@@ -1,6 +1,7 @@
 package amintabite.Capstone_backend.Controllers;
 
 import amintabite.Capstone_backend.Entities.Utente;
+import amintabite.Capstone_backend.Enums.Roles;
 import amintabite.Capstone_backend.Exceptions.UnauthorizedException;
 import amintabite.Capstone_backend.Exceptions.ValidationsException;
 import amintabite.Capstone_backend.Payloads.LoginPayload;
@@ -38,8 +39,16 @@ public class AuthorizationController {
                     fieldError -> errors.put(fieldError.getField(), fieldError.getDefaultMessage())
             );
             throw new ValidationsException(errors);
+
         }
-        return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body));
+
+
+        Roles usersRole = utenteService.findByEmail(body.email()).getRole();
+
+        String role = usersRole.name();
+
+        return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body),role);
+
     }
 
     @PostMapping("/register")

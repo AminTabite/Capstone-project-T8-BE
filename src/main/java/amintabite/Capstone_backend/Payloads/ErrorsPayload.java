@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 public class ErrorsPayload {
 
-    private Object messaggio; //per accettare le liste  map degli errori
+    private Object messages; //per accettare le liste  map degli errori
 
 
 
