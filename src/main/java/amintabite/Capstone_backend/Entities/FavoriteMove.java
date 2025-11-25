@@ -7,8 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.UUID;
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = { "utente_id", "move_input", "character_name", "damage", "startup", "on_block", "on_hit", "hit_level", "recovery" }
+        )
+)
 
-//https://tekkendocs.com/api/t8/Anna/framedata
 @Entity
 @Setter
 @Getter

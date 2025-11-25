@@ -25,13 +25,18 @@ public class FavMoveService {
 
     public FavoriteMove addFavorite(Utente utente, FavMovePayload payload){
 
-        boolean exists = favMoveRepository.existsByUtente_IdAndMoveInputAndCharacterNameAndDamageAndStartupAndOnBlockAndOnHitAndHitLevelAndRecovery(
-                utente.getId(), payload.moveInput(), payload.characterName(), payload.damage(),
-                payload.hitLevel(), payload.onHit(), payload.onBlock(), payload.recovery(),payload.startup()
-
+        boolean exists = favMoveRepository.existsByUtente_IdAndMoveInputAndCharacterNameAndDamageAndStartupAndOnBlockAndOnHitAndHitLevelAndRecovery(  utente.getId(),
+                payload.moveInput(),
+                payload.characterName(),
+                payload.damage(),
+                payload.startup(),
+                payload.onBlock(),
+                payload.onHit(),
+                payload.hitLevel(),
+                payload.recovery()
         );
 
-        if (exists) {
+        if (exists == true) {
             throw new BadRequestException(
                     "La mossa " + payload.moveInput() +
                             " del personaggio " + payload.characterName() +
