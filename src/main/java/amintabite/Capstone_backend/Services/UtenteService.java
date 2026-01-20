@@ -7,6 +7,7 @@ import amintabite.Capstone_backend.Exceptions.NotFoundException;
 import amintabite.Capstone_backend.Payloads.UtentePayload;
 import amintabite.Capstone_backend.Repositories.FavMoveRepository;
 import amintabite.Capstone_backend.Repositories.UtenteRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,8 @@ public class UtenteService {
         return utenteRepository.findAll(pageable);
 
     }
+
+    
 
     //salvataggio utente
 
