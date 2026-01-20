@@ -42,7 +42,29 @@ public class UtenteService {
 
     }
 
-    
+
+
+
+    @PostConstruct
+    public void createFirstAdmin() {
+
+        if(utenteRepository.count() == 0 ) {
+
+            Utente admin = new Utente();
+            admin.setUsername("THE LEGION");
+            admin.setEmail("aminepicode13@gmail.com");
+            admin.setPassword(bcrypt.encode("Admin1234!"));
+            admin.setRole(Roles.ADMIN);
+            utenteRepository.save(admin);
+            log.info (" first admin created: aminepicode13@gmail.com / Admin1234! ");
+
+
+        }
+
+
+    }
+
+
 
     //salvataggio utente
 
