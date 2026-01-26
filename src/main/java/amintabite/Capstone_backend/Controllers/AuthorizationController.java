@@ -20,7 +20,11 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:5173") //per accettare richieste da front-end
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://capstone-project-fe-amins-projects-15eef8a6.vercel.app"
+})
+//per accettare richieste da front-end
 public class AuthorizationController {
     @Autowired
     private AuthorizationService authorizationService;
