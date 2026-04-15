@@ -34,12 +34,8 @@ public class FavoriteMove {
 @Column(name = "damage")
 
 String damage;
-
-
-    @Column(name = "start_up")
-
+ @Column(name = "start_up")
     String startup;
-
 
     @Column(name = "on_block")
 
