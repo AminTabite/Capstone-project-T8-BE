@@ -31,7 +31,8 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://capstone-project-fe-amins-projects-15eef8a6.vercel.app"
+                "https://capstone-project-fe-amins-projects-15eef8a6.vercel.app",
+                "https://capstone-project-cmo2hwk8s-amins-projects-15eef8a6.vercel.app"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
